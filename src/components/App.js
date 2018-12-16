@@ -2,13 +2,14 @@
 import React from 'react';
 //Components
 import Header from './Header';
-
 import Home from './Home';
 import AjouterEvenement from './AjouterEvenement';
-
+// Services
+import * as socketService from '../services/socket-client.service';
+// Redux
+import store from '../redux/store/app-store';
 // socket
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { socket } from '../socket';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,52 +18,30 @@ class App extends React.Component {
       evenements: {},
       user: this.props.match.params.pseudo,
     };
-    socket.on('onNewEventAdded', data => {
-      const evenements = this.state.evenements;
-      evenements[data._id] = data;
-      this.setState({ evenements });
-    });
-    socket.on('onEventUpdated', data => {
-      let evenements = { ...this.state.evenements };
-      evenements[data._id] = data;
-      this.setState({ evenements });
-    });
   }
-
   componentWillMount() {
-    this.chargerEvenements();
-  }
-
-  chargerEvenements = () => {
-    let evenements = {};
-    socket.emit('chargerEvenements');
-    socket.on('chargerEvenementsSucceed', data => {
-      const tabevenements = data;
-      tabevenements.forEach(evenement => {
-        evenements[evenement._id] = evenement;
-      });
+    // Subscrive to the store for change
+    store.subscribe(() => {
       this.setState({
-        evenements: evenements,
+        evenements: store.getState(),
       });
     });
-  };
+    socketService.loadEvents();
+  }
 
   ajouterEvenement = evenement => {
-    socket.emit('AddEvent', evenement);
+    socketService.addEvent(evenement);
   };
 
   ajouterParticipants = evenement_id => {
-    socket.emit('AddParticipant', {
-      user: this.props.match.params.pseudo,
-      event: evenement_id,
-    });
+    socketService.addParticipant(evenement_id, this.props.match.params.pseudo);
   };
 
   unRegister = evenement_id => {
-    socket.emit('RemoveParticipant', {
-      user: this.props.match.params.pseudo,
-      event: evenement_id,
-    });
+    socketService.unsubscribeOfEvent(
+      evenement_id,
+      this.props.match.params.pseudo
+    );
   };
 
   render() {

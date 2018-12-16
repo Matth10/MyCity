@@ -26,11 +26,13 @@ class Root extends React.Component {
     };
   }
 
+  // Set the user auth status
   setUserAuth = isAuth => {
     this.setState({ isAuthenticated: isAuth });
   };
 
   render() {
+    // create PrivateRoute component to protect the route
     const PrivateRoute = ({ component: Component, ...rest }) => (
       <Route
         {...rest}
