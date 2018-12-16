@@ -11,10 +11,6 @@ var ObjectId = require('mongodb').ObjectId;
 var assert = require('assert');
 const url = require('./bddurl').url;
 var path = require('path');
-var sqlite3 = require('sqlite3').verbose();
-var crypto = require('crypto');
-const algorithm = 'aes-256-ctr';
-var bcrypt = require('bcrypt');
 //KEYS AND CERTIFICATES
 // const key = fs.readFileSync('');//TODO fill with the key file
 // const certificate = fs.readFileSync('');//TODO
@@ -28,15 +24,6 @@ var Client = function(Socket) {
   this.pseudo = '';
   this.secret = '';
 };
-//Salt for Hash
-var saltRounds = 10;
-//connection to the database
-let db = new sqlite3.Database(__dirname + '/' + 'clients.db', err => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Connected to the Authentification database.');
-});
 
 //APPLICATION ROUTING
 //get the index.html to load the fronthead
@@ -58,7 +45,6 @@ io.on('connection', socket => {
         async function(err, client) {
           if (err) throw err;
           var db = client.db('mycity');
-          var evenements;
           console.log('successfully connected to the database');
 
           function getEvenements(db) {
@@ -85,6 +71,7 @@ io.on('connection', socket => {
     .on('AddEvent', data => {
       MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, client) {
           if (err) throw err;
           var db = client.db('mycity').collection('mycity');
@@ -110,6 +97,7 @@ io.on('connection', socket => {
       // data contains data.event (id) and data.user (username)
       MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, client) {
           if (err) throw err;
           var db = client.db('mycity').collection('mycity');
@@ -121,14 +109,20 @@ io.on('connection', socket => {
                 $pull: { participants: data.user },
                 $inc: { nbPersonInscrit: -1 },
               }
-            ).then(function(e) {
-              socket.emit('removeParticipant_SUCCESS', data);
-              // Broadcast is not recieved by sender
-              socket.broadcast.emit(
-                'participantRemoved',
-                data.event.toString()
-              );
-            });
+            )
+              .then(function(e) {
+                db.findOne({ _id: ObjectId(data.event) })
+                  .then(found => {
+                    console.log(found);
+                    socket.broadcast.emit('onEventUpdated', event);
+                  })
+                  .catch(e => {
+                    console.error('error with find event updated: ' + e);
+                  });
+              })
+              .catch(e => {
+                console.error('error with remove participant: ' + e);
+              });
           } catch (e) {
             socket.emit('removeParticipant_FAILED', e);
           }
@@ -142,6 +136,7 @@ io.on('connection', socket => {
       // data contains data.event (id) and data.user (username)
       MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, client) {
           if (err) throw err;
           var db = client.db('mycity').collection('mycity');
@@ -152,13 +147,21 @@ io.on('connection', socket => {
               $push: { participants: data.user },
               $inc: { nbPersonInscrit: 1 },
             }
-          ).then(() => {
-            // Only non-senders recieve broadcast
-            db.findOne({ _id: ObjectId(data.event) }).then(found => {
-              console.log(found);
-              socket.broadcast.emit('onEventUpdated', event);
+          )
+            .then(() => {
+              // Only non-senders recieve broadcast
+              db.findOne({ _id: ObjectId(data.event) })
+                .then(found => {
+                  console.log(found);
+                  socket.broadcast.emit('onEventUpdated', event);
+                })
+                .catch(e => {
+                  console.error('error with find event updated: ' + e);
+                });
+            })
+            .catch(e => {
+              console.error('errror with add participant: ' + e);
             });
-          });
           client.close();
         }
       );
@@ -168,6 +171,7 @@ io.on('connection', socket => {
       // data contains data.event (id)
       MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, client) {
           if (err) throw err;
           var db = client.db('mycity').collection('mycity');
@@ -185,6 +189,7 @@ io.on('connection', socket => {
     .on('ResetParticipants', _ => {
       MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, client) {
           if (err) throw err;
           var db = client.db('mycity').collection('mycity');
@@ -205,6 +210,7 @@ io.on('connection', socket => {
     .on('UpdateType', _ => {
       MongoClient.connect(
         url,
+        { useNewUrlParser: true },
         function(err, client) {
           if (err) throw err;
           var db = client.db('mycity').collection('mycity');
