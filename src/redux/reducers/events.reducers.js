@@ -14,31 +14,32 @@ const initialeState = {
  * Reducer that dispatch event actions
  */
 export const eventsReducer = (state = initialeState, action) => {
+  let state_events;
   switch (action.type) {
     case fromEventActions.ADD_EVENT:
-      let state_events = { ...state.events};
+      state_events = { ...state.events };
       state_events[action.event._id] = action.event;
       return {
         ...state,
-        events = state_events,
+        events: state_events,
       };
     case fromEventActions.UPDATE_EVENT:
-      let state_events = {...state.events}
-      state_events[action.event._id] = action.event
+      state_events = { ...state.events };
+      state_events[action.event._id] = action.event;
       return {
         ...state,
-        events: state_events
-      }
+        events: state_events,
+      };
     case fromEventActions.LOAD_EVENTS:
-      let eventsLoaded = {}
+      let eventsLoaded = {};
       action.events.forEach(event => {
-        eventsLoaded[event._id] = event
-      })
+        eventsLoaded[event._id] = event;
+      });
       return {
         ...state,
-        events = eventsLoaded,
-      }
+        events: eventsLoaded,
+      };
     default:
-      return state
+      return state;
   }
 };

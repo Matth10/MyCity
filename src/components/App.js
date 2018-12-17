@@ -7,7 +7,7 @@ import AjouterEvenement from './AjouterEvenement';
 // Services
 import * as socketService from '../services/socket-client.service';
 // Redux
-import store from '../redux/store/app-store';
+import { store } from '../redux/store/app-store';
 // socket
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -19,6 +19,10 @@ class App extends React.Component {
       user: this.props.match.params.pseudo,
     };
   }
+
+  /**
+   * Lifecycle
+   */
   componentWillMount() {
     // Subscrive to the store for change
     store.subscribe(() => {
@@ -29,6 +33,9 @@ class App extends React.Component {
     socketService.loadEvents();
   }
 
+  /**
+   * Events Functions
+   */
   ajouterEvenement = evenement => {
     socketService.addEvent(evenement);
   };
@@ -44,6 +51,9 @@ class App extends React.Component {
     );
   };
 
+  /**
+   * Render
+   */
   render() {
     const path = {
       home: `/app/${this.props.match.params.pseudo}/home`,

@@ -6,17 +6,17 @@ import App from './components/App';
 import Connexion from './components/Connexion';
 import NotFound from './components/NotFound';
 import Register from './components/Register';
-import AjouterEvenement from './components/AjouterEvenement';
 // Rooter
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Switch,
   Redirect,
 } from 'react-router-dom';
 // CSS
 import './index.css';
+// Redux
+import { store } from './redux/store/app-store';
 
 class Root extends React.Component {
   constructor(props) {
@@ -26,10 +26,12 @@ class Root extends React.Component {
     };
   }
 
-  // Set the user auth status
-  setUserAuth = isAuth => {
-    this.setState({ isAuthenticated: isAuth });
-  };
+  componentWillMount() {
+    // Subscribe to the store to listen change on user authentification
+    store.subscribe(() => {
+      this.setState({ isAuthenticated: store.getState().isAuth });
+    });
+  }
 
   render() {
     // create PrivateRoute component to protect the route
@@ -49,8 +51,6 @@ class Root extends React.Component {
     return (
       <Router>
         <Switch>
-          {' '}
-          {/* Wrapper dans une div pour que ça fonctionne */}
           <Route
             exact
             path="/"

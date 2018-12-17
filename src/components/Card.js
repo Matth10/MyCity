@@ -1,6 +1,4 @@
 import React from 'react';
-import evenements from '../evenements';
-import { socket } from '../socket';
 
 class Card extends React.Component {
   state = {
