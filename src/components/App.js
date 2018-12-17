@@ -27,7 +27,7 @@ class App extends React.Component {
     // Subscrive to the store for change
     store.subscribe(() => {
       this.setState({
-        evenements: store.getState(),
+        evenements: store.getState()['eventsReducer'].events,
       });
     });
     socketService.loadEvents();
