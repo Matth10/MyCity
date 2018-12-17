@@ -20,7 +20,6 @@ class Connexion extends React.Component {
    */
   goToApp = async event => {
     event.preventDefault();
-    let userCurrent = this.state.user;
     try {
       const user = await app
         .auth()
