@@ -5,6 +5,9 @@ class Card extends React.Component {
     nbpersonnes: this.props.details.nbPersonInscrit,
   };
 
+  /**
+   * Event sub/unsub functions
+   */
   addPersonn = event => {
     if (this.props.details.nbPersonInscrit == this.props.details.nbpersonnes) {
       alert('Plus de place disponible');
@@ -17,6 +20,9 @@ class Card extends React.Component {
     this.props.unRegister(this.props.details._id);
   };
 
+  /**
+   * Render
+   */
   render() {
     const informations = this.props.details.informations
       .split(',')

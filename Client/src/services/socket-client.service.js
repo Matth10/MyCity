@@ -3,11 +3,11 @@
  */
 import { store } from '../redux/store/app-store';
 import * as fromEventsActions from '../redux/actions/events.actions';
-
+const io = require('socket.io-client');
 /**
  * Dependencies
  */
-const socket = require('socket.io-client')(':8080');
+const socket = io.connect('http://localhost:8080');
 
 /**
  * Handle event reciever
@@ -27,6 +27,7 @@ socket.on('onEventUpdated', data => {
 export const loadEvents = () => {
   socket.emit('chargerEvenements');
   socket.on('chargerEvenementsSucceed', data => {
+    console.log('socketservice ' + data);
     store.dispatch(fromEventsActions.loadEvent(data));
   });
 };

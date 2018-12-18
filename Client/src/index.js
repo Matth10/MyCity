@@ -26,7 +26,7 @@ class Root extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // Subscribe to the store to listen change on user authentification
     store.subscribe(() => {
       this.setState({

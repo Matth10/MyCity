@@ -1,0 +1,12 @@
+type Event {
+  _id: ID! @id
+  nom: String
+  image: String
+  informations: String
+  description: String
+  nbpersonnes: Int
+  nbPersonInscrit: Int @default(value: 0)
+  organisateur: String
+  date: String
+  participants: [String]
+}

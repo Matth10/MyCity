@@ -44,7 +44,7 @@ io.on('connection', socket => {
         { useNewUrlParser: true },
         async function(err, client) {
           if (err) throw err;
-          var db = client.db('mycity');
+          var db = await client.db('mycity');
           console.log('successfully connected to the database');
 
           function getEvenements(db) {

@@ -9,7 +9,7 @@ import * as socketService from '../services/socket-client.service';
 // Redux
 import { store } from '../redux/store/app-store';
 // socket
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Route } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
@@ -23,14 +23,15 @@ class App extends React.Component {
   /**
    * Lifecycle
    */
-  componentWillMount() {
+  componentDidMount() {
+    //socketService.loadEvents();
     // Subscrive to the store for change
     store.subscribe(() => {
+      console.log(store.getState());
       this.setState({
         evenements: store.getState()['eventsReducer'].events,
       });
     });
-    socketService.loadEvents();
   }
 
   /**
@@ -73,8 +74,6 @@ class App extends React.Component {
       return (
         <Home
           evenements={this.state.evenements}
-          chargerEvenements={this.chargerEvenements}
-          evenementsInscrits={this.state.evenementsInscrits}
           ajouterParticipants={this.ajouterParticipants}
           unRegister={this.unRegister}
           user={this.state.user}

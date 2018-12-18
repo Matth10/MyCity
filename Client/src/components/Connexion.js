@@ -8,13 +8,6 @@ import { store } from '../redux/store/app-store';
 import * as fromUserActions from '../redux/actions/user.actions';
 
 class Connexion extends React.Component {
-  state = {
-    message: {
-      type: 'success',
-      msg: null,
-    },
-  };
-
   /**
    * Login Function
    */

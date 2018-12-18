@@ -2,9 +2,6 @@
 import React from 'react';
 //Components
 import Card from './Card';
-// Importer les recettes
-// import evenements from '../evenements';
-// socket
 
 class Home extends React.Component {
   render() {
