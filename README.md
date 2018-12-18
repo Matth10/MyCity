@@ -1,32 +1,52 @@
 # APP MOVE YOUR CITY
+
 Move your City is an application that allows students to share their hobbies with others. The goal of this application is to recap all the events near from the user. Every student can create an event.
 
 ## Installation guide
-***Warning*** : You need to have node and npm installed. 
+
+**_Warning_** : You need to have node and npm installed.
 
 First you need to clone this project
+
 ```
 git clone <URL_Project>
 ```
+
 Then you can install all the dependencies with the command :
+
 ```
 npm install
 ```
-To start the application you need to execute two commands : 
+
+To start the application you need to execute two commands :
+
 ```
-npm start 
+npm start
 ```
+
+**For the backend**
+First start the prisma container with the command:
+
 ```
-node Servers/server.js
+docker-compose up
+```
+
+Then start the server api
+
+```
+node index.js
 ```
 
 ### Screenshots
 
-#### Login 
+#### Login
+
 ![login](https://github.com/Matth10/MyCity/blob/master/img/login.png)
 
-#### Home 
+#### Home
+
 ![home](https://github.com/Matth10/MyCity/blob/master/img/home.png)
 
-#### Create Events 
+#### Create Events
+
 ![create](https://github.com/Matth10/MyCity/blob/master/img/create.png)
