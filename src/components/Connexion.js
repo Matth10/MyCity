@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 // Firebase init
 import app from '../base';
 // Redux
-import { store } from '../redux/store/app-store';
-import * as fromUserActions from '../redux/actions/user.actions';
+import { connect } from 'react-redux';
+import { userIsLogin } from '../redux/actions/user.actions';
 
 class Connexion extends React.Component {
   /**
@@ -26,7 +26,7 @@ class Connexion extends React.Component {
             .currentUser.getIdToken()
             .then(token => {
               // distpatch store action
-              store.dispatch(fromUserActions.userIsLogin(token));
+              this.props.userIsLogin(token);
               // Route the client to the home page
               this.props.history.push(`/app/${this.pseudoInput.value}/home`);
             });
@@ -80,4 +80,7 @@ class Connexion extends React.Component {
   }
 }
 
-export default Connexion;
+export default connect(
+  null,
+  { userIsLogin }
+)(Connexion);

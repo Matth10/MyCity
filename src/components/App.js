@@ -4,10 +4,9 @@ import React from 'react';
 import Header from './Header';
 import Home from './Home';
 import AjouterEvenement from './AjouterEvenement';
-// Services
-import * as socketService from '../services/socket-client.service';
 // Redux
-import { store } from '../redux/store/app-store';
+import { loadEventsFetching } from '../redux/actions/events.actions';
+import { connect } from 'react-redux';
 // socket
 import { BrowserRouter as Route } from 'react-router-dom';
 
@@ -15,7 +14,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      evenements: {},
       user: this.props.match.params.pseudo,
     };
   }
@@ -24,33 +22,17 @@ class App extends React.Component {
    * Lifecycle
    */
   componentDidMount() {
-    //socketService.loadEvents();
-    // Subscrive to the store for change
-    store.subscribe(() => {
-      console.log(store.getState());
-      this.setState({
-        evenements: store.getState()['eventsReducer'].events,
-      });
-    });
+    this.props.loadEventsFetching();
   }
 
   /**
    * Events Functions
    */
-  ajouterEvenement = evenement => {
-    socketService.addEvent(evenement);
-  };
+  ajouterEvenement = evenement => {};
 
-  ajouterParticipants = evenement_id => {
-    socketService.addParticipant(evenement_id, this.props.match.params.pseudo);
-  };
+  ajouterParticipants = evenement_id => {};
 
-  unRegister = evenement_id => {
-    socketService.unsubscribeOfEvent(
-      evenement_id,
-      this.props.match.params.pseudo
-    );
-  };
+  unRegister = evenement_id => {};
 
   /**
    * Render
@@ -73,7 +55,7 @@ class App extends React.Component {
     const home = () => {
       return (
         <Home
-          evenements={this.state.evenements}
+          evenements={this.props.events}
           ajouterParticipants={this.ajouterParticipants}
           unRegister={this.unRegister}
           user={this.state.user}
@@ -91,4 +73,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return state.eventsReducer;
+};
+
+export default connect(
+  mapStateToProps,
+  { loadEventsFetching }
+)(App);

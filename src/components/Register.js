@@ -2,8 +2,8 @@ import React from 'react';
 // Firebase init
 import app from '../base';
 // Redux
-import { store } from '../redux/store/app-store';
-import * as fromUserActions from '../redux/actions/user.actions';
+import { connect } from 'react-redux';
+import { userIsSignUp } from '../redux/actions/user.actions';
 
 class Register extends React.Component {
   /**
@@ -28,7 +28,7 @@ class Register extends React.Component {
             .currentUser.getIdToken()
             .then(token => {
               // Dispatch action
-              store.dispatch(fromUserActions.SIGNUP(token));
+              this.props.userIsSignUp(token);
               // Route the client
               this.props.history.push(`/app/${this.pseudoInput.value}/home`);
             });
@@ -121,4 +121,7 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default connect(
+  null,
+  { userIsSignUp }
+)(Register);
