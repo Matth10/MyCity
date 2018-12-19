@@ -28,4 +28,17 @@ type Mutation {
     date: String
     participants: [String]
   ): Event!
+
+  updateEvent(
+    _id: ID!
+    nom: String
+    image: String
+    informations: String
+    description: String
+    nbpersonnes: Int
+    nbPersonInscrit: Int
+    organisateur: String
+    date: String
+    participants: [String]
+  ): Event!
 }

@@ -12,7 +12,7 @@ const resolvers = {
     events: (root, args, context, info) => {
       return context.prisma.events();
     },
-    event: (parent, args) => {
+    event: (parent, args, context, info) => {
       return context.prisma.event({ _id: args._id });
     },
   },
@@ -26,7 +26,24 @@ const resolvers = {
         nbPersonInscrit: args.nbPersonInscrit,
         organisateur: args.organisateur,
         date: args.date,
-        participants: args.participants,
+        participants: { set: args.participants },
+      });
+    },
+    updateEvent: (parent, args, context, info) => {
+      return context.prisma.updateEvent({
+        data: {
+          nom: args.nom,
+          informations: args.informations,
+          description: args.description,
+          nbpersonnes: args.nbpersonnes,
+          nbPersonInscrit: args.nbPersonInscrit,
+          organisateur: args.organisateur,
+          date: args.date,
+          participants: { set: args.participants },
+        },
+        where: {
+          _id: args._id,
+        },
       });
     },
   },

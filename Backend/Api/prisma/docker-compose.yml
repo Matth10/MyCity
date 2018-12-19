@@ -1,6 +1,7 @@
 version: '3'
 services:
   prisma:
+    container_name: prisma_mycity
     image: prismagraphql/prisma:1.22
     restart: always
     ports:
@@ -13,6 +14,7 @@ services:
             connector: mongo
             uri: mongodb://prisma:prisma@mongo
   mongo:
+    container_name: mongo_mycity
     image: mongo:3.6
     restart: always
     environment:
