@@ -30,12 +30,12 @@ export const eventsReducer = (state = initialeState, action) => {
         events: state_events,
         isFetching: false,
       };
-    case fromEventActions.UPDATE_EVENT_FETCHING:
+    case fromEventActions.UPDATE_PARTICIPANTS_FETCHING:
       return {
         ...state,
         isFetching: true,
       };
-    case fromEventActions.UPDATE_EVENT_SUCCESS:
+    case fromEventActions.UPDATE_PARTICIPANTS_SUCCESS:
       state_events = { ...state.events };
       state_events[action.event._id] = action.event;
       return {

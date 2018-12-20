@@ -5,10 +5,14 @@ import Header from './Header';
 import Home from './Home';
 import AjouterEvenement from './AjouterEvenement';
 // Redux
-import { loadEventsFetching } from '../redux/actions/events.actions';
+import {
+  loadEventsFetching,
+  addEventFetching,
+  updateParticipantsFetching,
+} from '../redux/actions/events.actions';
 import { connect } from 'react-redux';
 // socket
-import { BrowserRouter as Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
@@ -28,11 +32,29 @@ class App extends React.Component {
   /**
    * Events Functions
    */
-  ajouterEvenement = evenement => {};
+  ajouterEvenement = event => {
+    this.props.addEventFetching(event);
+  };
 
-  ajouterParticipants = evenement_id => {};
+  ajouterParticipants = evenement_id => {
+    let participants = this.props.events[evenement_id].participants;
+    // Add the new participant
+    participants.push(this.state.user);
+    // Dispatch the updateEventFetching action
+    this.props.updateParticipantsFetching(evenement_id, participants);
+  };
 
-  unRegister = evenement_id => {};
+  unRegister = evenement_id => {
+    let participants = this.props.events[evenement_id].participants;
+    // Delete the participant
+    let index = participants.indexOf(this.state.user);
+    if (index !== -1) {
+      participants.splice(index, 1);
+      console.log(participants);
+    }
+    // Dispatch the updateEventFetching action
+    this.props.updateParticipantsFetching(evenement_id, participants);
+  };
 
   /**
    * Render
@@ -43,31 +65,33 @@ class App extends React.Component {
       ajouterEvenement: `/app/${this.props.match.params.pseudo}/creerevenement`,
     };
 
-    const ajouterevenement = () => {
-      return (
-        <AjouterEvenement
-          pseudo={this.props.match.params.pseudo}
-          ajouterEvenement={this.ajouterEvenement}
-        />
-      );
-    };
-
-    const home = () => {
-      return (
-        <Home
-          evenements={this.props.events}
-          ajouterParticipants={this.ajouterParticipants}
-          unRegister={this.unRegister}
-          user={this.state.user}
-        />
-      );
-    };
-
     return (
       <div className="box">
         <Header pseudo={this.props.match.params.pseudo} />
-        <Route path={path.home} component={home} />
-        <Route path={path.ajouterEvenement} component={ajouterevenement} />
+        <Route
+          path={path.home}
+          render={props => {
+            return (
+              <Home
+                evenements={this.props.events}
+                ajouterParticipants={this.ajouterParticipants}
+                unRegister={this.unRegister}
+                user={this.state.user}
+              />
+            );
+          }}
+        />
+        <Route
+          path={path.ajouterEvenement}
+          render={props => {
+            return (
+              <AjouterEvenement
+                pseudo={this.props.match.params.pseudo}
+                ajouterEvenement={this.ajouterEvenement}
+              />
+            );
+          }}
+        />
       </div>
     );
   }
@@ -79,5 +103,9 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { loadEventsFetching }
+  {
+    loadEventsFetching,
+    addEventFetching,
+    updateParticipantsFetching,
+  }
 )(App);

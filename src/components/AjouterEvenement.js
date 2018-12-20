@@ -5,14 +5,15 @@ class AjouterEvenement extends React.Component {
     event.preventDefault();
     const evenement = {
       nom: this.nom.value,
-      image: this.image.value,
+      image:
+        this.image.value,
       informations: this.informations.value,
       description: this.description.value,
-      nbpersonnes: this.nbpersonnes.value,
+      nbpersonnes: +this.nbpersonnes.value,
       organisateur: this.props.pseudo,
       date: this.date.value,
+      participants: [this.props.pseudo],
     };
-    console.log(evenement);
     this.props.ajouterEvenement(evenement);
     this.evenementForm.reset();
   };
@@ -39,7 +40,11 @@ class AjouterEvenement extends React.Component {
 
           <input ref={input => (this.date = input)} type="date" />
 
-          <input ref={input => (this.nbpersonnes = input)} type="number" />
+          <input
+            ref={input => (this.nbpersonnes = input)}
+            type="number"
+            placeholder="Nombre de places disponibles"
+          />
 
           <textarea
             ref={input => (this.informations = input)}

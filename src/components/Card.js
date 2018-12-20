@@ -1,15 +1,13 @@
 import React from 'react';
 
 class Card extends React.Component {
-  state = {
-    nbpersonnes: this.props.details.nbPersonInscrit,
-  };
-
   /**
    * Event sub/unsub functions
    */
-  addPersonn = event => {
-    if (this.props.details.nbPersonInscrit == this.props.details.nbpersonnes) {
+  addPersonn = () => {
+    if (
+      this.props.details.participants.length === this.props.details.nbpersonnes
+    ) {
       alert('Plus de place disponible');
     } else {
       this.props.ajouterParticipants(this.props.details._id);
@@ -34,12 +32,18 @@ class Card extends React.Component {
     let button;
     if (!this.props.isRegistered) {
       button = <button onClick={e => this.addPersonn(e)}>Participer</button>;
-    } else {
+    } else if (
+      this.props.details.participants.indexOf(
+        this.props.details.organisateur
+      ) === -1
+    ) {
       button = (
         <button className="unregister" onClick={e => this.unRegister(e)}>
           Se Désincrire
         </button>
       );
+    } else {
+      button = <button className="btn-admin">Organisateur</button>;
     }
 
     return (
@@ -58,7 +62,7 @@ class Card extends React.Component {
         </div>
         <div className="participer">{button}</div>
         <div className="nombre-places">
-          {this.props.details.nbPersonInscrit} /{' '}
+          {this.props.details.participants.length} /{' '}
           {this.props.details.nbpersonnes}
         </div>
       </div>

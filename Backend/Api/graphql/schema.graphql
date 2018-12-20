@@ -5,7 +5,6 @@ type Event {
   informations: String
   description: String
   nbpersonnes: Int
-  nbPersonInscrit: Int
   organisateur: String
   date: String
   participants: [String]
@@ -23,7 +22,6 @@ type Mutation {
     informations: String
     description: String
     nbpersonnes: Int
-    nbPersonInscrit: Int
     organisateur: String
     date: String
     participants: [String]
@@ -36,9 +34,10 @@ type Mutation {
     informations: String
     description: String
     nbpersonnes: Int
-    nbPersonInscrit: Int
     organisateur: String
     date: String
     participants: [String]
   ): Event!
+
+  addParticipant(_id_event: ID, username: String): Event!
 }

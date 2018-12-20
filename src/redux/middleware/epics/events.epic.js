@@ -2,11 +2,10 @@
  * Imports
  */
 import * as fromEventActions from '../../actions/events.actions';
-import { store } from '../../store/app-store';
 import {
   fetchEvents,
   addEvent,
-  updateEvent,
+  updateParticipantsEvent,
 } from '../../../services/events.service';
 import { Observable } from 'rxjs-compat';
 
@@ -25,18 +24,27 @@ export const loadEventsEpic = action$ =>
 
 export const addEventEpic = action$ =>
   action$.ofType(fromEventActions.ADD_EVENT_FETCHING).mergeMap(action =>
-    Observable.fromPromise(addEvent())
-      .map(response => fromEventActions.addEventSuccess(response.data.event))
+    Observable.fromPromise(addEvent(action.event))
+      .map(response => fromEventActions.addEventSuccess(response.data.createEvent))
       .catch(error =>
         Observable.of({ type: 'ADD_EVENT_FAILED', payload: error })
       )
   );
 
-export const updateEventEpic = action$ =>
-  action$.ofType(fromEventActions.UPDTAE_EVENT_FETCHING).mergeMap(action =>
-    Observable.fromPromise(fetchEvents())
-      .map(response => fromEventActions.updateEventSuccess(response.data.event))
-      .catch(error =>
-        Observable.of({ type: 'UPDATE_EVENT_FAILED', payload: error })
+export const updateParticipantsEpic = action$ =>
+  action$
+    .ofType(fromEventActions.UPDATE_PARTICIPANTS_FETCHING)
+    .mergeMap(action =>
+      Observable.fromPromise(
+        updateParticipantsEvent(
+          action.payload.event_id,
+          action.payload.participants
+        )
       )
-  );
+        .map(response =>
+          fromEventActions.updateParticipantsSuccess(response.data.updateEvent)
+        )
+        .catch(error =>
+          Observable.of({ type: 'UPDATE_PARTICIPANTS_FAILED', payload: error })
+        )
+    );

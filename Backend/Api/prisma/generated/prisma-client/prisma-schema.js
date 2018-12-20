@@ -14,7 +14,6 @@ type Event {
   informations: String
   description: String
   nbpersonnes: Int
-  nbPersonInscrit: Int
   organisateur: String
   date: String
   participants: [String!]!
@@ -32,7 +31,6 @@ input EventCreateInput {
   informations: String
   description: String
   nbpersonnes: Int
-  nbPersonInscrit: Int
   organisateur: String
   date: String
   participants: EventCreateparticipantsInput
@@ -60,8 +58,6 @@ enum EventOrderByInput {
   description_DESC
   nbpersonnes_ASC
   nbpersonnes_DESC
-  nbPersonInscrit_ASC
-  nbPersonInscrit_DESC
   organisateur_ASC
   organisateur_DESC
   date_ASC
@@ -75,7 +71,6 @@ type EventPreviousValues {
   informations: String
   description: String
   nbpersonnes: Int
-  nbPersonInscrit: Int
   organisateur: String
   date: String
   participants: [String!]!
@@ -105,7 +100,6 @@ input EventUpdateInput {
   informations: String
   description: String
   nbpersonnes: Int
-  nbPersonInscrit: Int
   organisateur: String
   date: String
   participants: EventUpdateparticipantsInput
@@ -117,7 +111,6 @@ input EventUpdateManyMutationInput {
   informations: String
   description: String
   nbpersonnes: Int
-  nbPersonInscrit: Int
   organisateur: String
   date: String
   participants: EventUpdateparticipantsInput
@@ -206,14 +199,6 @@ input EventWhereInput {
   nbpersonnes_lte: Int
   nbpersonnes_gt: Int
   nbpersonnes_gte: Int
-  nbPersonInscrit: Int
-  nbPersonInscrit_not: Int
-  nbPersonInscrit_in: [Int!]
-  nbPersonInscrit_not_in: [Int!]
-  nbPersonInscrit_lt: Int
-  nbPersonInscrit_lte: Int
-  nbPersonInscrit_gt: Int
-  nbPersonInscrit_gte: Int
   organisateur: String
   organisateur_not: String
   organisateur_in: [String!]

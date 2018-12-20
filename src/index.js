@@ -7,7 +7,7 @@ import App_Auth from './components/App_Auth';
 import './index.css';
 // Redux
 import { store } from './redux/store/app-store';
-import { Provider, connect } from 'react-redux';
+import { Provider } from 'react-redux';
 
 const Root = () => {
   return (

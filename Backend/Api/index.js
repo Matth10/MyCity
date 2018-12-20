@@ -20,10 +20,10 @@ const resolvers = {
     createEvent: (parent, args, context, info) => {
       return context.prisma.createEvent({
         nom: args.nom,
+        image: args.image,
         informations: args.informations,
         description: args.description,
         nbpersonnes: args.nbpersonnes,
-        nbPersonInscrit: args.nbPersonInscrit,
         organisateur: args.organisateur,
         date: args.date,
         participants: { set: args.participants },
@@ -33,10 +33,10 @@ const resolvers = {
       return context.prisma.updateEvent({
         data: {
           nom: args.nom,
+          image: args.image,
           informations: args.informations,
           description: args.description,
           nbpersonnes: args.nbpersonnes,
-          nbPersonInscrit: args.nbPersonInscrit,
           organisateur: args.organisateur,
           date: args.date,
           participants: { set: args.participants },
@@ -54,7 +54,6 @@ const resolvers = {
     informations: parent => parent.informations,
     description: parent => parent.description,
     nbpersonnes: parent => parent.nbpersonnes,
-    nbPersonInscrit: parent => parent.nbPersonInscrit,
     organisateur: parent => parent.organisateur,
     date: parent => parent.date,
     participants: parent => parent.participants,

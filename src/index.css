@@ -512,7 +512,10 @@ header h1 {
 
 .unregister {
   background-color: #74b3ce;
-  opacity: ;
+}
+
+.btn-admin {
+  background-color: #78d5d7;
 }
 
 .nombre-places {
