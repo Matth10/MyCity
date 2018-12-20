@@ -45,10 +45,23 @@ npm start
 First start the prisma container with the command:
 
 ```
-docker-compose up
+docker-compose up -d
 ```
 
-Then start the server api
+After that you need to install prisma on your computer.
+```
+npm install -g prisma
+```
+Then go to the prisma folder and deploy and generate the client
+```
+prisma deploy
+
+
+prisma generate
+```
+*To check if prisma is running you can have access to the graphql playground on your host, port 4466*
+
+Then you can start the server api
 
 ```
 node index.js
