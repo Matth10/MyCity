@@ -1,7 +1,14 @@
 import React from 'react';
+// Firebase init
 import app from '../base';
+// Redux
+import { connect } from 'react-redux';
+import { userIsSignUp } from '../redux/actions/user.actions';
 
 class Register extends React.Component {
+  /**
+   * Signup function
+   */
   goToApp = async event => {
     event.preventDefault();
     const newUser = {
@@ -14,13 +21,26 @@ class Register extends React.Component {
     try {
       const user = await app
         .auth()
-        .createUserWithEmailAndPassword(newUser['email'], newUser['password']);
-      this.props.history.push(`/app/${this.pseudoInput.value}/home`);
+        .createUserWithEmailAndPassword(newUser['email'], newUser['password'])
+        .then(() => {
+          app
+            .auth()
+            .currentUser.getIdToken()
+            .then(token => {
+              // Dispatch action
+              this.props.userIsSignUp(token);
+              // Route the client
+              this.props.history.push(`/app/${this.pseudoInput.value}/home`);
+            });
+        });
     } catch (error) {
       alert(error);
     }
   };
 
+  /**
+   * Render
+   */
   render() {
     return (
       <div className="connexionBox">
@@ -101,4 +121,7 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default connect(
+  null,
+  { userIsSignUp }
+)(Register);

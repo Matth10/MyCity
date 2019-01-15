@@ -1,22 +1,18 @@
+// React
 import React from 'react';
 import { Link } from 'react-router-dom';
+// Firebase init
 import app from '../base';
+// Redux
+import { connect } from 'react-redux';
+import { userIsLogin } from '../redux/actions/user.actions';
 
 class Connexion extends React.Component {
-  state = {
-    message: {
-      type: 'success',
-      msg: null,
-    },
-    user: {
-      pseudo: '',
-      password: '',
-    },
-  };
-
+  /**
+   * Login Function
+   */
   goToApp = async event => {
     event.preventDefault();
-    let userCurrent = this.state.user;
     try {
       const user = await app
         .auth()
@@ -25,15 +21,24 @@ class Connexion extends React.Component {
           this.passwordInput.value
         )
         .then(() => {
-          this.props.setUserAuth(true);
-          this.props.history.push(`/app/${this.pseudoInput.value}/home`);
+          app
+            .auth()
+            .currentUser.getIdToken()
+            .then(token => {
+              // distpatch store action
+              this.props.userIsLogin(token);
+              // Route the client to the home page
+              this.props.history.push(`/app/${this.pseudoInput.value}/home`);
+            });
         });
     } catch (error) {
       alert(error);
     }
   };
-  //  {this.state.message.type === 'success' ? <p>{this.state.message.message}</p> }
 
+  /**
+   * Render
+   */
   render() {
     return (
       <div className="connexionBox">
@@ -75,4 +80,7 @@ class Connexion extends React.Component {
   }
 }
 
-export default Connexion;
+export default connect(
+  null,
+  { userIsLogin }
+)(Connexion);

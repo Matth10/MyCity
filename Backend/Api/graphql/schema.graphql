@@ -1,0 +1,43 @@
+type Event {
+  _id: ID!
+  nom: String
+  image: String
+  informations: String
+  description: String
+  nbpersonnes: Int
+  organisateur: String
+  date: String
+  participants: [String]
+}
+
+type Query {
+  events: [Event]
+  event(_id: ID!): Event
+}
+
+type Mutation {
+  createEvent(
+    nom: String
+    image: String
+    informations: String
+    description: String
+    nbpersonnes: Int
+    organisateur: String
+    date: String
+    participants: [String]
+  ): Event!
+
+  updateEvent(
+    _id: ID!
+    nom: String
+    image: String
+    informations: String
+    description: String
+    nbpersonnes: Int
+    organisateur: String
+    date: String
+    participants: [String]
+  ): Event!
+
+  addParticipant(_id_event: ID, username: String): Event!
+}

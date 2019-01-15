@@ -2,105 +2,110 @@
 import React from 'react';
 //Components
 import Header from './Header';
-
 import Home from './Home';
 import AjouterEvenement from './AjouterEvenement';
-
+// Redux
+import {
+  loadEventsFetching,
+  addEventFetching,
+  updateParticipantsFetching,
+} from '../redux/actions/events.actions';
+import { connect } from 'react-redux';
 // socket
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { socket } from '../socket';
+import { Route } from 'react-router-dom';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      evenements: {},
       user: this.props.match.params.pseudo,
     };
-    socket.on('onNewEventAdded', data => {
-      const evenements = this.state.evenements;
-      evenements[data._id] = data;
-      this.setState({ evenements });
-    });
-    socket.on('onEventUpdated', data => {
-      let evenements = { ...this.state.evenements };
-      evenements[data._id] = data;
-      this.setState({ evenements });
-    });
   }
 
-  componentWillMount() {
-    this.chargerEvenements();
+  /**
+   * Lifecycle
+   */
+  componentDidMount() {
+    this.props.loadEventsFetching();
   }
 
-  chargerEvenements = () => {
-    let evenements = {};
-    socket.emit('chargerEvenements');
-    socket.on('chargerEvenementsSucceed', data => {
-      const tabevenements = data;
-      tabevenements.forEach(evenement => {
-        evenements[evenement._id] = evenement;
-      });
-      this.setState({
-        evenements: evenements,
-      });
-    });
-  };
-
-  ajouterEvenement = evenement => {
-    socket.emit('AddEvent', evenement);
+  /**
+   * Events Functions
+   */
+  ajouterEvenement = event => {
+    this.props.addEventFetching(event);
   };
 
   ajouterParticipants = evenement_id => {
-    socket.emit('AddParticipant', {
-      user: this.props.match.params.pseudo,
-      event: evenement_id,
-    });
+    let participants = this.props.events[evenement_id].participants;
+    // Add the new participant
+    participants.push(this.state.user);
+    // Dispatch the updateEventFetching action
+    this.props.updateParticipantsFetching(evenement_id, participants);
   };
 
   unRegister = evenement_id => {
-    socket.emit('RemoveParticipant', {
-      user: this.props.match.params.pseudo,
-      event: evenement_id,
-    });
+    let participants = this.props.events[evenement_id].participants;
+    // Delete the participant
+    let index = participants.indexOf(this.state.user);
+    if (index !== -1) {
+      participants.splice(index, 1);
+      console.log(participants);
+    }
+    // Dispatch the updateEventFetching action
+    this.props.updateParticipantsFetching(evenement_id, participants);
   };
 
+  /**
+   * Render
+   */
   render() {
     const path = {
       home: `/app/${this.props.match.params.pseudo}/home`,
       ajouterEvenement: `/app/${this.props.match.params.pseudo}/creerevenement`,
     };
 
-    const ajouterevenement = () => {
-      return (
-        <AjouterEvenement
-          pseudo={this.props.match.params.pseudo}
-          ajouterEvenement={this.ajouterEvenement}
-        />
-      );
-    };
-
-    const home = () => {
-      return (
-        <Home
-          evenements={this.state.evenements}
-          chargerEvenements={this.chargerEvenements}
-          evenementsInscrits={this.state.evenementsInscrits}
-          ajouterParticipants={this.ajouterParticipants}
-          unRegister={this.unRegister}
-          user={this.state.user}
-        />
-      );
-    };
-
     return (
       <div className="box">
         <Header pseudo={this.props.match.params.pseudo} />
-        <Route path={path.home} component={home} />
-        <Route path={path.ajouterEvenement} component={ajouterevenement} />
+        <Route
+          path={path.home}
+          render={props => {
+            return (
+              <Home
+                evenements={this.props.events}
+                ajouterParticipants={this.ajouterParticipants}
+                unRegister={this.unRegister}
+                user={this.state.user}
+              />
+            );
+          }}
+        />
+        <Route
+          path={path.ajouterEvenement}
+          render={props => {
+            return (
+              <AjouterEvenement
+                pseudo={this.props.match.params.pseudo}
+                ajouterEvenement={this.ajouterEvenement}
+              />
+            );
+          }}
+        />
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return state.eventsReducer;
+};
+
+export default connect(
+  mapStateToProps,
+  {
+    loadEventsFetching,
+    addEventFetching,
+    updateParticipantsFetching,
+  }
+)(App);
