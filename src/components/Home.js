@@ -1,7 +1,7 @@
 // React
-import React from 'react';
+import React from 'react'
 //Components
-import Card from './Card';
+import Card from './Card'
 
 class Home extends React.Component {
   render() {
@@ -18,10 +18,10 @@ class Home extends React.Component {
             : true
         }
       />
-    ));
+    ))
 
-    return <div className="cards">{cards}</div>;
+    return <div className="cards">{cards}</div>
   }
 }
 
-export default Home;
+export default Home

@@ -1,5 +1,5 @@
-import { client } from '../config/init_graphql';
-import gql from 'graphql-tag';
+import { client } from '../config/init_graphql'
+import gql from 'graphql-tag'
 
 /**
  * Funtions
@@ -20,9 +20,9 @@ export const fetchEvents = () => {
           participants
         }
       }
-    `,
-  });
-};
+    `
+  })
+}
 
 export const updateParticipantsEvent = (_id_event, participants) => {
   return client.mutate({
@@ -41,23 +41,24 @@ export const updateParticipantsEvent = (_id_event, participants) => {
         }
       }
     `,
-    variables: { _id: _id_event, participants: participants },
-  });
-};
+    variables: { _id: _id_event, participants: participants }
+  })
+}
 
 export const addEvent = event => {
   console.log(event)
   return client.mutate({
     mutation: gql`
       mutation(
-          $nom:String,
-          $image:String,
-          $informations:String,
-          $description:String,
-          $nbpersonnes:Int,
-          $organisateur:String
-          $date:String,
-          $participants:[String]) {
+        $nom: String
+        $image: String
+        $informations: String
+        $description: String
+        $nbpersonnes: Int
+        $organisateur: String
+        $date: String
+        $participants: [String]
+      ) {
         createEvent(
           nom: $nom
           image: $image
@@ -78,7 +79,8 @@ export const addEvent = event => {
           date
           participants
         }
-      }`,
+      }
+    `,
     variables: {
       nom: event.nom,
       image: event.image,
@@ -87,7 +89,7 @@ export const addEvent = event => {
       nbpersonnes: event.nbpersonnes,
       organisateur: event.organisateur,
       date: event.date,
-      participants: event.participants,
-    },
-  });
-};
+      participants: event.participants
+    }
+  })
+}

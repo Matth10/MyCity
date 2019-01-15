@@ -1,23 +1,23 @@
-import React from 'react';
+import React from 'react'
 // Firebase init
-import app from '../base';
+import app from '../base'
 // Redux
-import { connect } from 'react-redux';
-import { userIsSignUp } from '../redux/actions/user.actions';
+import { connect } from 'react-redux'
+import { userIsSignUp } from '../redux/actions/user.actions'
 
 class Register extends React.Component {
   /**
    * Signup function
    */
   goToApp = async event => {
-    event.preventDefault();
+    event.preventDefault()
     const newUser = {
       lastname: this.FirstNameInput.value,
       firstname: this.LastNameInput.value,
       pseudo: this.pseudoInput.value,
       password: this.passwordInput.value,
-      email: this.emailInput.value,
-    };
+      email: this.emailInput.value
+    }
     try {
       const user = await app
         .auth()
@@ -28,15 +28,15 @@ class Register extends React.Component {
             .currentUser.getIdToken()
             .then(token => {
               // Dispatch action
-              this.props.userIsSignUp(token);
+              this.props.userIsSignUp(token)
               // Route the client
-              this.props.history.push(`/app/${this.pseudoInput.value}/home`);
-            });
-        });
+              this.props.history.push(`/app/${this.pseudoInput.value}/home`)
+            })
+        })
     } catch (error) {
-      alert(error);
+      alert(error)
     }
-  };
+  }
 
   /**
    * Render
@@ -56,7 +56,7 @@ class Register extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.FirstNameInput = input;
+              this.FirstNameInput = input
             }}
           />
 
@@ -69,7 +69,7 @@ class Register extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.LastNameInput = input;
+              this.LastNameInput = input
             }}
           />
 
@@ -82,7 +82,7 @@ class Register extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.pseudoInput = input;
+              this.pseudoInput = input
             }}
           />
 
@@ -95,7 +95,7 @@ class Register extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.emailInput = input;
+              this.emailInput = input
             }}
           />
 
@@ -108,7 +108,7 @@ class Register extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.passwordInput = input;
+              this.passwordInput = input
             }}
           />
 
@@ -117,11 +117,11 @@ class Register extends React.Component {
           </button>
         </form>
       </div>
-    );
+    )
   }
 }
 
 export default connect(
   null,
   { userIsSignUp }
-)(Register);
+)(Register)

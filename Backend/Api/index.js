@@ -1,8 +1,8 @@
 /**
  * Imports
  */
-const graphql = require('graphql-yoga');
-const { prisma } = require('./prisma/generated/prisma-client');
+const graphql = require('graphql-yoga')
+const { prisma } = require('./prisma/generated/prisma-client')
 
 /**
  * Resolvers
@@ -10,11 +10,11 @@ const { prisma } = require('./prisma/generated/prisma-client');
 const resolvers = {
   Query: {
     events: (root, args, context, info) => {
-      return context.prisma.events();
+      return context.prisma.events()
     },
     event: (parent, args, context, info) => {
-      return context.prisma.event({ _id: args._id });
-    },
+      return context.prisma.event({ _id: args._id })
+    }
   },
   Mutation: {
     createEvent: (parent, args, context, info) => {
@@ -26,8 +26,8 @@ const resolvers = {
         nbpersonnes: args.nbpersonnes,
         organisateur: args.organisateur,
         date: args.date,
-        participants: { set: args.participants },
-      });
+        participants: { set: args.participants }
+      })
     },
     updateEvent: (parent, args, context, info) => {
       return context.prisma.updateEvent({
@@ -39,13 +39,13 @@ const resolvers = {
           nbpersonnes: args.nbpersonnes,
           organisateur: args.organisateur,
           date: args.date,
-          participants: { set: args.participants },
+          participants: { set: args.participants }
         },
         where: {
-          _id: args._id,
-        },
-      });
-    },
+          _id: args._id
+        }
+      })
+    }
   },
   Event: {
     _id: parent => parent._id,
@@ -56,9 +56,9 @@ const resolvers = {
     nbpersonnes: parent => parent.nbpersonnes,
     organisateur: parent => parent.organisateur,
     date: parent => parent.date,
-    participants: parent => parent.participants,
-  },
-};
+    participants: parent => parent.participants
+  }
+}
 
 /**
  * Set up the server
@@ -66,9 +66,9 @@ const resolvers = {
 const server = new graphql.GraphQLServer({
   typeDefs: './graphql/schema.graphql',
   resolvers,
-  context: { prisma },
-});
+  context: { prisma }
+})
 
 server.start(() => {
-  console.log(`Server is running on http://localhost:4000`);
-});
+  console.log('Server is running on http://localhost:4000')
+})

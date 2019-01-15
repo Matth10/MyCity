@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 class Card extends React.Component {
   /**
@@ -8,15 +8,15 @@ class Card extends React.Component {
     if (
       this.props.details.participants.length === this.props.details.nbpersonnes
     ) {
-      alert('Plus de place disponible');
+      alert('Plus de place disponible')
     } else {
-      this.props.ajouterParticipants(this.props.details._id);
+      this.props.ajouterParticipants(this.props.details._id)
     }
-  };
+  }
 
   unRegister = event => {
-    this.props.unRegister(this.props.details._id);
-  };
+    this.props.unRegister(this.props.details._id)
+  }
 
   /**
    * Render
@@ -24,14 +24,14 @@ class Card extends React.Component {
   render() {
     const informations = this.props.details.informations
       .split(',')
-      .map((item, key) => <li key={key}>{item}</li>);
+      .map((item, key) => <li key={key}>{item}</li>)
 
-    const description = this.props.details.description;
+    const description = this.props.details.description
 
     // Button Subcribe and Unsuscribe
-    let button;
+    let button
     if (!this.props.isRegistered) {
-      button = <button onClick={e => this.addPersonn(e)}>Participer</button>;
+      button = <button onClick={e => this.addPersonn(e)}>Participer</button>
     } else if (
       this.props.details.participants.indexOf(
         this.props.details.organisateur
@@ -41,9 +41,9 @@ class Card extends React.Component {
         <button className="unregister" onClick={e => this.unRegister(e)}>
           Se Désincrire
         </button>
-      );
+      )
     } else {
-      button = <button className="btn-admin">Organisateur</button>;
+      button = <button className="btn-admin">Organisateur</button>
     }
 
     return (
@@ -66,8 +66,8 @@ class Card extends React.Component {
           {this.props.details.nbpersonnes}
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Card;
+export default Card

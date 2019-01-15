@@ -1,18 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 class Admin extends React.Component {
-
-	render() {
-
-		return (
-			<div className="cards">
-				<footer>
-					
-				</footer>
-			</div>
-		)
-	}
-
+  render() {
+    return (
+      <div className="cards">
+        <footer />
+      </div>
+    )
+  }
 }
 
-export default Admin;
+export default Admin

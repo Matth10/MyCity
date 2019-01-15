@@ -1,20 +1,20 @@
 // React
-import React from 'react';
+import React from 'react'
 // Components
-import App from './App';
-import Connexion from './Connexion';
-import NotFound from './NotFound';
-import Register from './Register';
+import App from './App'
+import Connexion from './Connexion'
+import NotFound from './NotFound'
+import Register from './Register'
 // Rooter
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect,
-} from 'react-router-dom';
+  Redirect
+} from 'react-router-dom'
 
 // Redux
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 class App_Auth extends React.Component {
   render() {
@@ -30,7 +30,7 @@ class App_Auth extends React.Component {
           )
         }
       />
-    );
+    )
 
     return (
       <Router>
@@ -39,24 +39,24 @@ class App_Auth extends React.Component {
             exact
             path="/"
             render={props => {
-              return <Connexion {...props} />;
+              return <Connexion {...props} />
             }}
           />
           <Route
             path="/register/"
             render={props => {
-              return <Register {...props} />;
+              return <Register {...props} />
             }}
           />
           <PrivateRoute path="/app/:pseudo/" component={App} />
           <Route component={NotFound} />
         </Switch>
       </Router>
-    );
+    )
   }
 }
 const mapStateToProps = state => {
-  return state['userReducer'];
-};
+  return state['userReducer']
+}
 
-export default connect(mapStateToProps)(App_Auth);
+export default connect(mapStateToProps)(App_Auth)

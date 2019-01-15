@@ -1,18 +1,18 @@
 // React
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 // Firebase init
-import app from '../base';
+import app from '../base'
 // Redux
-import { connect } from 'react-redux';
-import { userIsLogin } from '../redux/actions/user.actions';
+import { connect } from 'react-redux'
+import { userIsLogin } from '../redux/actions/user.actions'
 
 class Connexion extends React.Component {
   /**
    * Login Function
    */
   goToApp = async event => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const user = await app
         .auth()
@@ -26,15 +26,15 @@ class Connexion extends React.Component {
             .currentUser.getIdToken()
             .then(token => {
               // distpatch store action
-              this.props.userIsLogin(token);
+              this.props.userIsLogin(token)
               // Route the client to the home page
-              this.props.history.push(`/app/${this.pseudoInput.value}/home`);
-            });
-        });
+              this.props.history.push(`/app/${this.pseudoInput.value}/home`)
+            })
+        })
     } catch (error) {
-      alert(error);
+      alert(error)
     }
-  };
+  }
 
   /**
    * Render
@@ -53,7 +53,7 @@ class Connexion extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.pseudoInput = input;
+              this.pseudoInput = input
             }}
           />
           <label htmlFor="inputPassword" className="sr-only">
@@ -65,7 +65,7 @@ class Connexion extends React.Component {
             className="form-control"
             required
             ref={input => {
-              this.passwordInput = input;
+              this.passwordInput = input
             }}
           />
           <button className="btnLogin" type="submit">
@@ -76,11 +76,11 @@ class Connexion extends React.Component {
           </p>
         </form>
       </div>
-    );
+    )
   }
 }
 
 export default connect(
   null,
   { userIsLogin }
-)(Connexion);
+)(Connexion)

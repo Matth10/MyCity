@@ -1,22 +1,21 @@
-import React from 'react';
+import React from 'react'
 
 class AjouterEvenement extends React.Component {
   creerEvenement = event => {
-    event.preventDefault();
+    event.preventDefault()
     const evenement = {
       nom: this.nom.value,
-      image:
-        this.image.value,
+      image: this.image.value,
       informations: this.informations.value,
       description: this.description.value,
       nbpersonnes: +this.nbpersonnes.value,
       organisateur: this.props.pseudo,
       date: this.date.value,
-      participants: [this.props.pseudo],
-    };
-    this.props.ajouterEvenement(evenement);
-    this.evenementForm.reset();
-  };
+      participants: [this.props.pseudo]
+    }
+    this.props.ajouterEvenement(evenement)
+    this.evenementForm.reset()
+  }
 
   render() {
     return (
@@ -61,8 +60,8 @@ class AjouterEvenement extends React.Component {
           <button type="submit">+ Ajouter un événement</button>
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default AjouterEvenement;
+export default AjouterEvenement
