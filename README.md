@@ -86,12 +86,23 @@ node index.js
 
 The goal of this application is apply some best practices to develop a green it application.
 
-**1. Optimize access to static resources**
+#### 1. Optimize access to static resources
 
-**2. Lighten multimedia content**
+he first step is to externalize all CSS or Javascript in dedicated files. This will allow the web server and then the browser but also different proxies to cache these files and thus preserve the bandwidth networks.
 
-**3. Find a green web host**
+Second, minify and compress those same files. This will also preserve the bandwidth during the first download or the expiration of caches.
 
-**4. Virtualize and containererize**
+Finally the last step is a recommendation as valid in the development of tools or utility libraries: modularize the various style sheets or declaration files of your JS functions. Thus, only the files needed for the current page or application will be loaded. A good framework will always have a core part and additional modules or plugins.
 
+#### 2. Lighten multimedia content
+* Encode your images / videos / sounds before they are broadcast in your CMS or your site, do not do it dynamically from your site.
+* Publish different versions of the same content in order to offer a version perfectly adapted to your user's visualization or listening context (hardware, screen, network, bandwidth, environment). For example, you can use the HTML5 / CSS3 media queries to target the level of definition.
+* Optimize also the content published by the users: either by quotas on the sizes of upload, or by tools of compression to the sending or at the time of the recording in database with the use of tools such as ImageMagic for images.
 
+#### 3. Find a green web host
+
+Today, there is unfortunately no label to standardize what a Green web host. We must therefore rely on the criteria presented by articles such as GreenIt.fr What criteria to identify a "green" host? or even browse the proposed lists such as that of Ekopedia .
+
+#### 4. Virtualize and containererize
+
+We will therefore be able to take advantage of virtualization or even better the containerization offered by the majority of public cloud providers to limit the energy footprint of our sites and adapt their consumption to the needs of requests processing. 
