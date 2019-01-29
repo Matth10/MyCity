@@ -1,4 +1,5 @@
 # APP MOVE YOUR CITY
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1c9b936555604ce69c1e6fa2075015cf)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Matth10/MyCity&amp;utm_campaign=Badge_Grade)
 
 Move your City is an application that allows students to share their hobbies with others. The goal of this application is to recap all the events near from the user. Every student can create an event.
 
