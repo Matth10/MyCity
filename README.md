@@ -81,3 +81,17 @@ node index.js
 #### Create Events
 
 ![create](https://github.com/Matth10/MyCity/blob/master/img/create.png)
+
+## Green It and best practices
+
+The goal of this application is apply some best practices to develop a green it application.
+
+**1. Optimize access to static resources**
+
+**2. Lighten multimedia content**
+
+**3. Find a green web host**
+
+**4. Virtualize and containererize**
+
+
