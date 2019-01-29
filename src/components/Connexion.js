@@ -5,9 +5,28 @@ import { Link } from 'react-router-dom'
 import app from '../base'
 // Redux
 import { connect } from 'react-redux'
-import { userIsLogin } from '../redux/actions/user.actions'
+import { userIsLogin, userIsLogOut } from '../redux/actions/user.actions'
 
 class Connexion extends React.Component {
+  constructor(props) {
+    super(props)
+
+    app.auth().onAuthStateChanged(authUser => {
+      console.log(authUser)
+      if (authUser) {
+        app
+          .auth()
+          .currentUser.getIdToken()
+          .then(token => {
+            this.props.userIsLogin(token)
+            // Route the client to the home page
+            this.props.history.push(`/app/${authUser.email}/home`)
+          })
+      } else {
+        this.props.userIsLogOut()
+      }
+    })
+  }
   /**
    * Login Function
    */
@@ -82,5 +101,5 @@ class Connexion extends React.Component {
 
 export default connect(
   null,
-  { userIsLogin }
+  { userIsLogin, userIsLogOut }
 )(Connexion)

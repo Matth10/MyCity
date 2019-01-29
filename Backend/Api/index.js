@@ -10,6 +10,7 @@ const { prisma } = require('./prisma/generated/prisma-client')
 const resolvers = {
   Query: {
     events: (root, args, context, info) => {
+      // TODO : trié avec date et supprimer ceux date antérieur à aujourd'hui
       return context.prisma.events()
     },
     event: (parent, args, context, info) => {

@@ -1,7 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+// Firebase init
+import app from '../base'
+// Redux
+import { connect } from 'react-redux'
+import { userIsLogOut } from '../redux/actions/user.actions'
 
 class Navbar extends React.Component {
+  logout = () => {
+    app
+      .auth()
+      .signOut()
+      .then(() => {
+        this.props.userIsLogOut()
+      })
+      .catch(e => console.error(e))
+  }
   render() {
     const navTab = [
       { nom: 'Accueil', path: `/app/${this.props.pseudo}/home` },
@@ -18,10 +32,19 @@ class Navbar extends React.Component {
 
     return (
       <div className="cssmenu">
-        <ul>{listNav}</ul>
+        <ul>
+          {listNav}
+          <li>
+            {' '}
+            <a onClick={this.logout}>Logout </a>
+          </li>
+        </ul>
       </div>
     )
   }
 }
 
-export default Navbar
+export default connect(
+  null,
+  { userIsLogOut }
+)(Navbar)
